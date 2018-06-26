@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>HTML5 Server Side Event Example in Go</title>
+</head>
+
+<body>
+
+    You're here for a better audio experience. Enjoy.
+
+    <script type="text/javascript">
+        function isPlaying(audelem) {
+            return !audelem.paused;
+        }
+
+        function fadeAudio() {
+            var sounds = document.getElementsByTagName('audio');
+
+            for (i = 0; i < sounds.length; i++) {
+                if (isPlaying(sounds[i])) {
+                    var fadeAudio = setInterval(function() {
+
+                        // Only fade if past the fade out point or not at zero already
+                        if ((sounds[i].currentTime >= fadePoint) && (sounds[i].volume != 0.0)) {
+                            sounds[i].volume -= 0.1;
+                        }
+                        // When volume at zero stop all the intervalling
+                        if (sounds[i].volume === 0.0) {
+                            clearInterval(fadeAudio);
+                        }
+                    }, 200);
+                }
+            }
+
+        }
+        // Create a new HTML5 EventSource
+        var source = new EventSource('/events/');
+
+        // Create a callback for when a new message is received.
+        source.onmessage = function(e) {
+            console.log("Got message " + e.data);
+			
+            //Different tracks
+            //Start 1 is Fantasmic's music
+            if (e.data.includes("start1")) {
+                console.log("Playing audio");
+				fadeAudio()
+                if (playing != "") {
+                    getSoundAndFadeAudio(playing)
+                }
+                var audio1 = document.getElementById("audio1");
+                playing = audio1;
+                var playPromise = audio1.play();
+
+                // In browsers that don’t yet support this functionality,
+                // playPromise won’t be defined.
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        // Automatic playback started!
+                        console.log("Audio starting");
+                    }).catch(function(error) {
+                        console.log("Audio error " + error);
+                        // Automatic playback failed.
+                        // Show a UI element to let the user manually start playback.
+                    });
+                }
+            }
+            //Start 2 is Fantasmic music
+            if (e.data.includes("start2")) {
+                console.log("Playing audio");
+				fadeAudio()
+                var audio = document.getElementById("audio2");
+
+                var playPromise = audio.play();
+
+                // In browsers that don’t yet support this functionality,
+                // playPromise won’t be defined.
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        // Automatic playback started!
+                        console.log("Audio starting");
+                    }).catch(function(error) {
+                        console.log("Audio error " + error);
+                        // Automatic playback failed.
+                        // Show a UI element to let the user manually start playback.
+                    });
+                }
+            }
+            //Start 2 is esplenade music
+            if (e.data.includes("start3")) {
+                console.log("Playing audio");
+				fadeAudio()
+                var audio = document.getElementById("audio3");
+
+                var playPromise = audio.play();
+
+                // In browsers that don’t yet support this functionality,
+                // playPromise won’t be defined.
+                if (playPromise !== undefined) {
+                    playPromise.then(function() {
+                        // Automatic playback started!
+                        console.log("Audio starting");
+                    }).catch(function(error) {
+                        console.log("Audio error " + error);
+                        // Automatic playback failed.
+                        // Show a UI element to let the user manually start playback.
+                    });
+                }
+            }
+
+        };
+    </script>
+    <audio id="audio1" src="http://104.216.19.247/fantasmic.ogg"></audio>
+    <audio id="audio2" src="http://104.216.19.247/disneylandforever.mp3"></audio>
+	<audio id="audio3" src="http://104.216.19.247/disneylandforever.mp3"></audio>
+
+</body>
+
+</html>
