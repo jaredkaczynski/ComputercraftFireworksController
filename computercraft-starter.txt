@@ -1,0 +1,13 @@
+local tArgs = { ... }
+
+os.loadAPI("note")
+
+sleep(10)
+
+local test = http.get("yourserverinfo/your server route)
+
+note.playSong("song.nbs")
+
+
+
+example route http://test.com/play1
